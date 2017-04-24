@@ -232,22 +232,144 @@ class newuser:
         web.header("Content-Type","text/html; charset=utf-8")
         return """
         <html>
-        <body>
-        <center>
-        <form method="POST">
-        告诉我你叫啥:<br>
-        <input type="text" name="newusername">
-        <br>
-        告诉我你的口令:<br>
-        <input type="text" name="newpassword">
-        <br><br>
-        <input type="submit" value="注册啦">
-        </form>
-        </center>
+            <body bgcolor="#C0C0C0">
+                <form method="POST">
+                    <div style="width:300px;
+                                height:230px;
+                                margin:100px auto;
+                                background:#525252;
+                                box-shadow:#666 0px 0px 6px;
+                                border-radius:10px">
+                        <center>
+                            <div style="width:300px;
+                                        height:30px;
+                                        margin=3px auto;
+                                        background:#606060;
+                                        line-height:30px;
+                                        border-radius:10px;
+                                        text-shadow:1px 1px 1px #949494">
+                                <font color="#DFDFDF">注册树洞账户</font>
+                            </div>
+                            <div style="margin:30px auto 10px;">
+                                <input style="width:200px;
+                                              height:30px;
+                                              border:none;
+                                              background:#DFDFDF;
+                                              border-radius:10px;
+                                              -webkit-appearance:none;"
+                                              type="text" name="newusername" placeholder="新登录名">
+                            </div>
+                            <div style="margin:3px auto 10px;">
+                                <input style="width:200px;
+                                              height:30px;
+                                              border:none;
+                                              background:#DFDFDF;
+                                              border-radius:10px;
+                                              -webkit-appearance:none;"
+                                              type="password" name="newpassword" placeholder="密码">
+                            </div>
+                            <div style="margin:3px auto 10px;">
+                                <input style="width:200px;
+                                              height:30px;
+                                              border:none;
+                                              background:#DFDFDF;
+                                              border-radius:10px;
+                                              -webkit-appearance:none;"
+                                              type="password" name="confirmpassword" placeholder="确认密码">
+                            </div>
+                            <div style="margin:3px auto 10px">
+                                <input type="submit" style="width:90px;
+                                                            height:30px;
+                                                            font-size:14px;
+                                                            background:#9DC45F;
+                                                            border:none;
+                                                            color:#585858;
+                                                            border-radius:4px;
+                                                            box-shadow:1px 1px 1px #3D3D3D;
+                                                            text-shadow:1px 1px 1px #949494;
+                                                            -webkit-appearance:none;"
+                                                            value="注册">
+                            </div>
+                        </center>
+                    </div>
+                </form>
+            </body>
+        </html>
         """
 
     def POST(self):
-        x = web.input();
+        x = web.input()
+        cur = conn.cursor()
+        aa = cur.execute("select name from pw where name='%s'" %(x.newusername))
+        cur.close()
+        info = cur.fetchmany(aa)
+        if len(info) != 0:
+            return """
+            <html>
+                <body bgcolor="#C0C0C0">
+                    <form method="POST">
+                        <div style="width:300px;
+                                    height:230px;
+                                    margin:100px auto;
+                                    background:#525252;
+                                    box-shadow:#666 0px 0px 6px;
+                                    border-radius:10px">
+                            <center>
+                                <div style="width:300px;
+                                            height:30px;
+                                            margin=3px auto;
+                                            background:#606060;
+                                            line-height:30px;
+                                            border-radius:10px;
+                                            text-shadow:1px 1px 1px #949494">
+                                    <font color="#DFDFDF">注册树洞账户</font>
+                                </div>
+                                <div style="margin:30px auto 10px;">
+                                    <input style="width:200px;
+                                                  height:30px;
+                                                  border:none;
+                                                  background:#DFDFDF;
+                                                  border-radius:10px;
+                                                  -webkit-appearance:none;"
+                                                  type="text" name="newusername" placeholder="新登录名">
+                                </div>
+                                <div style="margin:3px auto 10px;">
+                                    <input style="width:200px;
+                                                  height:30px;
+                                                  border:none;
+                                                  background:#DFDFDF;
+                                                  border-radius:10px;
+                                                  -webkit-appearance:none;"
+                                                  type="password" name="newpassword" placeholder="密码">
+                                </div>
+                                <div style="margin:3px auto 10px;">
+                                    <input style="width:200px;
+                                                  height:30px;
+                                                  border:none;
+                                                  background:#DFDFDF;
+                                                  border-radius:10px;
+                                                  -webkit-appearance:none;"
+                                                  type="password" name="confirmpassword" placeholder="确认密码">
+                                </div>
+                                <div style="margin:3px auto 10px">
+                                    <input type="submit" style="width:90px;
+                                                                height:30px;
+                                                                font-size:14px;
+                                                                background:#9DC45F;
+                                                                border:none;
+                                                                color:#585858;
+                                                                border-radius:4px;
+                                                                box-shadow:1px 1px 1px #3D3D3D;
+                                                                text-shadow:1px 1px 1px #949494;
+                                                                -webkit-appearance:none;"
+                                                                value="注册">
+                                </div>
+                            </center>
+                        </div>
+                    </form>
+                </body>
+            </html>
+            """
         cur = conn.cursor()
         cur.execute("insert into pw values('%s','%s')" %(x.newusername,x.newpassword))
         conn.commit()
