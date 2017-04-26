@@ -35,14 +35,14 @@ class login:
                         margin:100px auto;
                         background:#525252;
                         box-shadow:#666 0px 0px 6px;
-                        border-radius:10px">
+                        border-radius:4px">
             <center>
             <div style="width:300px;
                         height:30px;
                         margin=3px auto;
                         background:#606060;
                         line-height:30px;
-                        border-radius:10px;
+                        border-radius:4px;
                         text-shadow:1px 1px 1px #949494">
             <font color="#DFDFDF">登录树洞</font>
             </div>
@@ -51,7 +51,7 @@ class login:
                           margin:30px auto 3px;
                           border:none;
                           background:#DFDFDF;
-                          border-radius:10px;
+                          border-radius:4px;
                           -webkit-appearance:none;"
                           type="text" name="username" placeholder="登录名">
             <br>
@@ -60,7 +60,7 @@ class login:
                           margin:3px auto 10px;
                           border:none;
                           background:#DFDFDF;
-                          border-radius:10px;
+                          border-radius:4px;
                           -webkit-appearance:none;"
                           type="password" name="password" placeholder="密码">
             <br>
@@ -99,89 +99,90 @@ class login:
         aa = cur.execute("select password from pw where name='%s'" %x.username)
         info = cur.fetchmany(aa)
         cur.close()
-        if len(info) != 0 and x.password == info[0][0]:
-            web.setcookie('username',x.username,3600)
-            raise web.seeother("/user/%s" %x.username)
+        namecolor='#DFDFDF'
+        nametext='登录名'
+        pwtext='密码'
+        pwcolor='#DFDFDF'
+
+        if len(info) != 0:
+            if x.password == info[0][0]:
+                web.setcookie('username',x.username,3600)
+                raise web.seeother("/user/%s" %x.username)
+            else:
+                pwcolor='#E27575'
+                pwtext='密码错误'
         else:
-            web.header("Content-Type","text/html; charset=utf-8")
-            return """
-            <html>
-            <body bgcolor="#C0C0C0">
-            <form method="POST">
-            <div style="width:300px;
-                        height:230px;
-                        margin:100px auto;
-                        background:#525252;
-                        box-shadow:#666 0px 0px 6px;
-                        border-radius:10px">
-            <center>
-            <div style="width:300px;
-                        height:30px;
-                        margin=3px auto;
-                        background:#606060;
-                        line-height:30px;
-                        border-radius:10px;
-                        text-shadow:1px 1px 1px #949494">
-            <font color="#DFDFDF">登录树洞</font>
-            </div>
-            <input style="width:200px;
-                          height:30px;
-                          margin:30px auto 3px;
-                          border:none;
-                          background:#DFDFDF;
-                          border-radius:10px;
-                          -webkit-appearance:none;"
-                          type="text" name="username" placeholder="登录名">
-            <br>
-            <input style="width:200px;
-                          height:30px;
-                          margin:3px auto 10px;
-                          border:none;
-                          background:#DFDFDF;
-                          border-radius:10px;
-                          -webkit-appearance:none;"
-                          type="password" name="password" placeholder="密码">
-            <br>
-            </center>
-            <a href="/new" style="width:90px;
-                                  height:30px;
-                                  padding:5px 10px 5px 10px;
-                                  margin:50px 50px 10px;
-                                  font-size:14px;
-                                  background:#9DC45F;
-                                  text-decoration:none;
-                                  border:none;
-                                  color:#585858;
-                                  border-radius:4px;
-                                  box-shadow:1px 1px 1px #3D3D3D;
-                                  -webkit-appearance:none;
-                                  text-shadow:1px 1px 1px #949494;">注册</a>
-            <input type="submit" style="width:90px;
-                                        height:30px;
-                                        font-size:14px;
-                                        background:#FFCC02;
-                                        border:none;
-                                        color:#585858;
-                                        border-radius:4px;
-                                        box-shadow:1px 1px 1px #3D3D3D;
-                                        text-shadow:1px 1px 1px #949494;
-                                        -webkit-appearance:none;"
-                                        value="登录">
-            <br>
-            <br>
-            <center>
-            <div style="width:300px;
-                        height:30px;
-                        margin-top=2000px;
-                        background:#E27575;
-                        line-height:30px;
-                        text-shadow:1px 1px 1px #949494">
-            <font color="#383838">登录名或密码错误</font>
-            </center>
-            </div>
-            </div>
-            </form>
-            """
+            namecolor='#E27575'
+            nametext='没有此用户'
+
+        web.header("Content-Type","text/html; charset=utf-8")
+        return """
+        <html>
+        <body bgcolor="#C0C0C0">
+        <form method="POST">
+        <div style="width:300px;
+                    height:200px;
+                    margin:100px auto 20px;
+                    background:#525252;
+                    box-shadow:#666 0px 0px 6px;
+                    border-radius:4px">
+        <center>
+        <div style="width:300px;
+                    height:30px;
+                    margin=3px auto;
+                    background:#606060;
+                    line-height:30px;
+                    border-radius:4px;
+                    text-shadow:1px 1px 1px #949494">
+        <font color="#DFDFDF">登录树洞</font>
+        </div>
+        <input style="width:200px;
+                      height:30px;
+                      margin:30px auto 3px;
+                      border:none;
+                      background:%s;
+                      border-radius:4px;
+                      -webkit-appearance:none;"
+                      type="text" name="username" placeholder="%s">
+        <br>
+        <input style="width:200px;
+                      height:30px;
+                      margin:3px auto 10px;
+                      border:none;
+                      background:%s;
+                      border-radius:4px;
+                      -webkit-appearance:none;"
+                      type="password" name="password" placeholder="%s">
+        <br>
+        </center>
+        <a href="/new" style="width:90px;
+                              height:30px;
+                              padding:5px 10px 5px 10px;
+                              margin:50px 50px 10px;
+                              font-size:14px;
+                              background:#9DC45F;
+                              text-decoration:none;
+                              border:none;
+                              color:#585858;
+                              border-radius:4px;
+                              box-shadow:1px 1px 1px #3D3D3D;
+                              -webkit-appearance:none;
+                              text-shadow:1px 1px 1px #949494;">注册</a>
+        <input type="submit" style="width:90px;
+                                    height:30px;
+                                    font-size:14px;
+                                    background:#FFCC02;
+                                    border:none;
+                                    color:#585858;
+                                    border-radius:4px;
+                                    box-shadow:1px 1px 1px #3D3D3D;
+                                    text-shadow:1px 1px 1px #949494;
+                                    -webkit-appearance:none;"
+                                    value="登录">
+        </div>
+        </div>
+        </form>
+        """ %(namecolor,nametext,pwcolor,pwtext)
 
 class logout:
     def GET(self):
@@ -239,14 +240,14 @@ class newuser:
                                 margin:100px auto;
                                 background:#525252;
                                 box-shadow:#666 0px 0px 6px;
-                                border-radius:10px">
+                                border-radius:4px">
                         <center>
                             <div style="width:300px;
                                         height:30px;
                                         margin=3px auto;
                                         background:#606060;
                                         line-height:30px;
-                                        border-radius:10px;
+                                        border-radius:4px;
                                         text-shadow:1px 1px 1px #949494">
                                 <font color="#DFDFDF">注册树洞账户</font>
                             </div>
@@ -255,7 +256,7 @@ class newuser:
                                               height:30px;
                                               border:none;
                                               background:#DFDFDF;
-                                              border-radius:10px;
+                                              border-radius:4px;
                                               -webkit-appearance:none;"
                                               type="text" name="newusername" placeholder="新登录名">
                             </div>
@@ -264,7 +265,7 @@ class newuser:
                                               height:30px;
                                               border:none;
                                               background:#DFDFDF;
-                                              border-radius:10px;
+                                              border-radius:4px;
                                               -webkit-appearance:none;"
                                               type="password" name="newpassword" placeholder="密码">
                             </div>
@@ -273,7 +274,7 @@ class newuser:
                                               height:30px;
                                               border:none;
                                               background:#DFDFDF;
-                                              border-radius:10px;
+                                              border-radius:4px;
                                               -webkit-appearance:none;"
                                               type="password" name="confirmpassword" placeholder="确认密码">
                             </div>
@@ -301,9 +302,25 @@ class newuser:
         x = web.input()
         cur = conn.cursor()
         aa = cur.execute("select name from pw where name='%s'" %(x.newusername))
-        cur.close()
         info = cur.fetchmany(aa)
-        if len(info) != 0:
+        cur.close()
+        namecolor='#DFDFDF'
+        pwcolor='#DFDFDF'
+        nametext='登录名'
+        pwtext='确认密码'
+        if len(info) != 0 or x.confirmpassword != x.newpassword or x.newusername == "":
+            if len(info) != 0:
+                namecolor='#E27575'
+                nametext='登陆名已存在'
+            else:
+                if x.newusername == "":
+                    namecolor='#E27575'
+                    nametext='用户名不能为空'
+                else:
+                    pwtext='密码不同'
+                    pwcolor='#E27575'
+
+            web.header("Content-Type","text/html; charset=utf-8")
             return """
             <html>
                 <body bgcolor="#C0C0C0">
@@ -313,14 +330,14 @@ class newuser:
                                     margin:100px auto;
                                     background:#525252;
                                     box-shadow:#666 0px 0px 6px;
-                                    border-radius:10px">
+                                    border-radius:4px">
                             <center>
                                 <div style="width:300px;
                                             height:30px;
                                             margin=3px auto;
                                             background:#606060;
                                             line-height:30px;
-                                            border-radius:10px;
+                                            border-radius:4px;
                                             text-shadow:1px 1px 1px #949494">
                                     <font color="#DFDFDF">注册树洞账户</font>
                                 </div>
@@ -328,17 +345,17 @@ class newuser:
                                     <input style="width:200px;
                                                   height:30px;
                                                   border:none;
-                                                  background:#DFDFDF;
-                                                  border-radius:10px;
+                                                  background:%s;
+                                                  border-radius:4px;
                                                   -webkit-appearance:none;"
-                                                  type="text" name="newusername" placeholder="新登录名">
+                                                  type="text" name="newusername" placeholder="%s">
                                 </div>
                                 <div style="margin:3px auto 10px;">
                                     <input style="width:200px;
                                                   height:30px;
                                                   border:none;
                                                   background:#DFDFDF;
-                                                  border-radius:10px;
+                                                  border-radius:4px;
                                                   -webkit-appearance:none;"
                                                   type="password" name="newpassword" placeholder="密码">
                                 </div>
@@ -346,10 +363,10 @@ class newuser:
                                     <input style="width:200px;
                                                   height:30px;
                                                   border:none;
-                                                  background:#DFDFDF;
-                                                  border-radius:10px;
+                                                  background:%s;
+                                                  border-radius:4px;
                                                   -webkit-appearance:none;"
-                                                  type="password" name="confirmpassword" placeholder="确认密码">
+                                                  type="password" name="confirmpassword" placeholder="%s">
                                 </div>
                                 <div style="margin:3px auto 10px">
                                     <input type="submit" style="width:90px;
@@ -369,12 +386,13 @@ class newuser:
                     </form>
                 </body>
             </html>
-            """
-        cur = conn.cursor()
-        cur.execute("insert into pw values('%s','%s')" %(x.newusername,x.newpassword))
-        conn.commit()
-        cur.close()
-        raise web.seeother("/")
+            """ %(namecolor,nametext,pwcolor,pwtext)
+        else:
+            cur = conn.cursor()
+            cur.execute("insert into pw values('%s','%s')" %(x.newusername,x.newpassword))
+            conn.commit()
+            cur.close()
+            raise web.seeother("/")
 
 class user:
     def GET(self, username):
